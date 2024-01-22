@@ -1,1 +1,5 @@
-
+auth:
+  jwt:
+    issuer: team.sparta.com
+    secret: PO4c8z41Hia5gJG3oeuFJMRYBB4Ws4aZ
+    accessTokenExpirationHour: 168

@@ -25,16 +25,21 @@
 ### ✔️ DB
 <img src="https://img.shields.io/badge/supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white">
 
+## 와이어프레임
+
+![와이어프레임](https://velog.velcdn.com/images/xlddy02/post/f9e9cea7-b747-4e26-b4f6-0f6f2090b3d1/image.png)
+
 ## 패키지 구조
 
 ## API 명세서
 
 ## ERD
+
 ![ERD](https://velog.velcdn.com/images/xlddy02/post/b677b9e7-9dbf-4ea0-96d9-fa5d75e54e4d/image.png)
 
 ## 👨🏻‍💻 Built With
 
 * [황승현](https://github.com/HwangSeungHyeon) - 팀장
 * [최윤미](https://github.com/YunmiC/A7website) - 조원
-* [강군호](https://github.com/9nh5) - 조원, API명세서 작성, 댓글 CRUD기능 
-* [한정민](https://github.com/jeongminy) - 조원, 노션 페이지 작성 datebase 연동 및 수정, 발표
+* [강군호](https://github.com/9nh5) - 조원
+* [한정민](https://github.com/jeongminy) - 조원

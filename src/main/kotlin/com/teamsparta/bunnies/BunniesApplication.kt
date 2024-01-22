@@ -8,5 +8,4 @@ class BunniesApplication
 
 fun main(args: Array<String>) {
     runApplication<BunniesApplication>(*args)
-
 }

@@ -5,18 +5,19 @@ import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.PropertySource
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.Instant
 import java.util.*
 
+@PropertySource("classpath:jwt.yml")
 @Component
-
 class JwtPlugin(
-    @Value("\${auth.jwt.issuer}") private val issuer: String,
-    @Value("\${auth.jwt.secret}") private val secret: String,
-    @Value("\${auth.jwt.accessTokenExpirationHour}") private val accessTokenExpirationHour: Long
+    @Value("\${issuer}") private val issuer: String,
+    @Value("\${secret}") private val secret: String,
+    @Value("\${accessTokenExpirationHour}") private val accessTokenExpirationHour: Long
 ) {
     //주어진 토큰을 검증하고 파싱(해석)하는 기능을 수행
     fun validateToken(jwt: String): Result<Jws<Claims>>{

@@ -53,13 +53,15 @@ class CommentServiceImpl(
 
     @Transactional
     override fun deleteComment(request: DeleteCommentRequestDto) {
-        val foundComment = request.id.let {
-            commentRepository.findByIdOrNull(it)
-        } ?: throw Exception("target comment is not found")
+//        val foundComment = request.id.let {
+//            commentRepository.findByIdOrNull(it)
+//        } ?: throw Exception("target comment is not found")
+//
+//        foundComment.checkAuthentication(request.name)
+//
+//        commentRepository.deleteById(request.id)
 
-        foundComment.checkAuthentication(request.name)
-
-        commentRepository.deleteById(request.id)
+        TODO("Not yet implemented")
     }
 
 }

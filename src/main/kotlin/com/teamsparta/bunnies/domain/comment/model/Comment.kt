@@ -13,16 +13,25 @@ import java.time.LocalDateTime
 class Comment(
         @Column(name = "comment")
         var comment: String,
+
         @Column(name = "name")
         var name: String,
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "articleId")
-        val article: Article
 
-) : BaseTimeEntity() {
+//        @ManyToOne(fetch = FetchType.LAZY)
+//        @JoinColumn(name = "articleId")
+//
+) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
+
+    @CreatedDate
+    @Column(name = "create_at")
+    var createdAt: LocalDateTime? = null
+
+    @LastModifiedDate
+    @Column(name = "update_at")
+    var updateAt: LocalDateTime? = null
 
     fun checkAuthentication(name: String) {
         if (name != this.name) {

@@ -1,11 +1,11 @@
 package com.teamsparta.bunnies.domain.user.repository
 
-import com.teamsparta.bunnies.domain.user.model.User
+import com.teamsparta.bunnies.domain.user.model.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface UserRepository: JpaRepository <User, Long> {
+interface UserRepository: JpaRepository <UserEntity, Long> {
 
     fun existsByProfileEntityEmail(email: String): Boolean
 
-    fun findByProfileEntityEmail(email:String) : User?
+    fun findByProfileEntityEmail(email:String) : UserEntity?
 }

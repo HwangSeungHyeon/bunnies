@@ -14,8 +14,8 @@ class SwaggerConfig {
         .components(Components())
         .info(
             Info()
-                .title("Todolist API")
-                .description("Todolist API")
+                .title("BackOffice API")
+                .description("BackOffice API")
                 .version("1.0.0")
         )
 }

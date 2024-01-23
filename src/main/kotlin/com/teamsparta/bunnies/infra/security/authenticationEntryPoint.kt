@@ -1,7 +1,7 @@
 package com.teamsparta.bunnies.infra.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.teamsparta.bunnies.domain.exception.dto.ErrorResponse
+import com.teamsparta.bunnies.domain.exception.dto.ErrorResponseDto
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType
@@ -22,7 +22,7 @@ class CustomAuthenticationEntryPoint: AuthenticationEntryPoint {
         response.characterEncoding = "UTF-8"
 
         val objectMapper = ObjectMapper()
-        val jsonString = objectMapper.writeValueAsString(ErrorResponse("JWT verification failed"))
+        val jsonString = objectMapper.writeValueAsString(ErrorResponseDto("JWT verification failed"))
         response.writer.write(jsonString)
     }
 

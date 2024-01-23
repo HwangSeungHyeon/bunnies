@@ -1,8 +1,7 @@
 package com.teamsparta.bunnies.domain.user.model
 
-import com.teamsparta.bunnies.domain.user.dto.response.UserResponse
+import com.teamsparta.bunnies.domain.user.dto.response.UserResponseDto
 import jakarta.persistence.*
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 
 @Entity
 @Table(name = "app_user")
@@ -22,8 +21,8 @@ class User(
 
 }
 
-fun User.toResponse(): UserResponse {
-    return UserResponse(
+fun User.toResponse(): UserResponseDto {
+    return UserResponseDto(
         email = profile.email,
         nickname = profile.nickname,
         introduction = profile.introduction.toString(),

@@ -2,10 +2,10 @@ package com.teamsparta.bunnies.domain.user.service
 
 import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.exception.ModelNotFoundException
-import com.teamsparta.bunnies.domain.user.dto.request.LoginRequest
-import com.teamsparta.bunnies.domain.user.dto.request.SignUpRequest
-import com.teamsparta.bunnies.domain.user.dto.response.LoginResponse
-import com.teamsparta.bunnies.domain.user.dto.response.UserResponse
+import com.teamsparta.bunnies.domain.user.dto.request.LoginRequestDto
+import com.teamsparta.bunnies.domain.user.dto.request.SignUpRequestDto
+import com.teamsparta.bunnies.domain.user.dto.response.LoginResponseDto
+import com.teamsparta.bunnies.domain.user.dto.response.UserResponseDto
 import com.teamsparta.bunnies.domain.user.model.Profile
 import com.teamsparta.bunnies.domain.user.model.User
 import com.teamsparta.bunnies.domain.user.model.UserRole
@@ -22,14 +22,15 @@ class UserServiceImpl(
     private val jwtPlugin: JwtPlugin
 ): UserService {
 
-    override fun login(request: LoginRequest): LoginResponse {
-        val user = userRepository.findByProfileEmail(request.email) ?: throw ModelNotFoundException("User", null) //이메일 체크
+    override fun login(request: LoginRequestDto): LoginResponseDto {
+        val user = userRepository.findByProfileEmail(request.email)
+            ?: throw ModelNotFoundException("User", null) //이메일 체크
 
         if (!passwordEncoder.matches(request.password, user.profile.password)) {
             throw InvalidCredentialException()
         }
 
-        return LoginResponse(
+        return LoginResponseDto(
             accessToken = jwtPlugin.generateAccessToken(
                 subject = user.id.toString(),
                 email = user.profile.email,
@@ -38,7 +39,7 @@ class UserServiceImpl(
         )
     }
 
-    override fun signUp(request: SignUpRequest): UserResponse {
+    override fun signUp(request: SignUpRequestDto): UserResponseDto {
 
         if (userRepository.existsByProfileEmail(request.email))
             throw IllegalStateException("사용중")

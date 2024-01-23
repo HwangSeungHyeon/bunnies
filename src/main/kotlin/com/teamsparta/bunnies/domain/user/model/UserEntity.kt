@@ -5,7 +5,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "app_user")
-class User(
+class UserEntity(
 
     @Embedded
     var profileEntity: ProfileEntity,
@@ -21,7 +21,7 @@ class User(
 
 }
 
-fun User.toResponse(): UserResponseDto {
+fun UserEntity.toResponse(): UserResponseDto {
     return UserResponseDto(
         email = profileEntity.email,
         nickname = profileEntity.nickname,

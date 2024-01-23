@@ -7,7 +7,7 @@ import com.teamsparta.bunnies.domain.user.dto.request.SignUpRequestDto
 import com.teamsparta.bunnies.domain.user.dto.response.LoginResponseDto
 import com.teamsparta.bunnies.domain.user.dto.response.UserResponseDto
 import com.teamsparta.bunnies.domain.user.model.ProfileEntity
-import com.teamsparta.bunnies.domain.user.model.User
+import com.teamsparta.bunnies.domain.user.model.UserEntity
 import com.teamsparta.bunnies.domain.user.model.UserRole
 import com.teamsparta.bunnies.domain.user.model.toResponse
 import com.teamsparta.bunnies.domain.user.repository.UserRepository
@@ -45,7 +45,7 @@ class UserServiceImpl(
             throw IllegalStateException("사용중인 이메일입니다")
 
         return userRepository.save(
-            User(
+            UserEntity(
 
                 profileEntity = ProfileEntity(
                     email = request.email,

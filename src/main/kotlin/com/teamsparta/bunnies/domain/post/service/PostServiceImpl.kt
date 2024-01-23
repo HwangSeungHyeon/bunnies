@@ -8,17 +8,13 @@ import com.teamsparta.bunnies.domain.post.dto.response.PostDetailResponseDto
 import com.teamsparta.bunnies.domain.post.dto.response.PostResponseDto
 import com.teamsparta.bunnies.domain.post.model.PostEntity
 import com.teamsparta.bunnies.domain.post.repository.PostRepository
-import com.teamsparta.bunnies.domain.user.model.User
-import com.teamsparta.bunnies.domain.user.model.UserRole
 import com.teamsparta.bunnies.domain.user.repository.UserRepository
 import com.teamsparta.bunnies.infra.security.UserPrincipal
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.ui.Model
 
 @Service
 class PostServiceImpl(

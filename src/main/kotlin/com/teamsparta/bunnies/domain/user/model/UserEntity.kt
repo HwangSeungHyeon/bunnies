@@ -11,8 +11,8 @@ class User(
     var profileEntity: ProfileEntity,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    val role: UserRole = UserRole.USER
+    @Column(name = "role")
+    val role: UserRole
 ){
 
     @Id

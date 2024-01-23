@@ -3,6 +3,7 @@ package com.teamsparta.bunnies.infra.security
 import com.teamsparta.bunnies.infra.security.jwt.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authorization.AuthenticatedAuthorizationManager.anonymous
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -20,6 +21,15 @@ class SecurityConfig(
     private val accessDeniedHandler: AccessDeniedHandler
 ) {
 
+    private val allowedUrls = arrayOf(
+        "/", "/swawgger-ui/**", "/v3/**",
+        "/api/posts/**"
+    )
+
+    private val anonymousUrls = arrayOf(
+        "/signup", "login"
+    )
+
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         return http
@@ -27,12 +37,8 @@ class SecurityConfig(
             .formLogin { it.disable() } // UsernamePassworedAuthenticationFilter, DefaultLoginPageGeneratingFilter, DefaultLogoutPageGeneratingFilter 제외
             .csrf { it.disable() } // CsrfFilter 제외
             .authorizeHttpRequests {
-                it.requestMatchers(
-                    "/api/login",
-                    "/api/signup",
-                    "/swagger-ui/**",
-                    "/v3/api-docs/**"
-                ).permitAll()
+                it.requestMatchers(*allowedUrls).permitAll()
+                    .requestMatchers(*anonymousUrls).anonymous()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)

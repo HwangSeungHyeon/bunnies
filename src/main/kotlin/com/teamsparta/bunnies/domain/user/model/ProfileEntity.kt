@@ -1,7 +1,9 @@
 package com.teamsparta.bunnies.domain.user.model
 
+import com.teamsparta.bunnies.domain.user.dto.request.UpdateUserProfileRequestDto
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @Embeddable
 class ProfileEntity(

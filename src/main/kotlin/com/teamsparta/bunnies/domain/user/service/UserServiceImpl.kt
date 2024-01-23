@@ -42,7 +42,8 @@ class UserServiceImpl(
     override fun signUp(request: SignUpRequestDto): UserResponseDto {
 
         if (userRepository.existsByProfileEmail(request.email))
-            throw IllegalStateException("사용중")
+            throw IllegalStateException("사용중인 이메일입니다")
+
         return userRepository.save(
             User(
 

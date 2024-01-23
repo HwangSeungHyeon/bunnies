@@ -65,7 +65,8 @@ class PostServiceImpl(
             ?: throw ModelNotFoundException("Post", postId)
 
         // role이 ADMIN이거나 본인인 경우에만 수정 가능하도록 확인
-        if (user.role != entity.author.role && user.id != entity.author.id) throw InvalidCredentialException("권한이 없습니다.")
+        if (user.role != entity.author.role && user.id != entity.author.id)
+            throw InvalidCredentialException("권한이 없습니다.")
 
         return entity
             .apply { update(updatePostDto) }
@@ -84,7 +85,8 @@ class PostServiceImpl(
             ?: throw ModelNotFoundException("Post", postId)
 
         // role이 ADMIN이거나 본인인 경우에만 수정 가능하도록 확인
-        if (user.role != entity.author.role && user.id != entity.author.id) throw InvalidCredentialException("권한이 없습니다.")
+        if (user.role != entity.author.role && user.id != entity.author.id)
+            throw InvalidCredentialException("권한이 없습니다.")
 
         return entity
             .apply { isComplete() }
@@ -103,7 +105,8 @@ class PostServiceImpl(
             ?: throw ModelNotFoundException("User", userPrincipal.id)
 
         // role이 ADMIN이거나 본인인 경우에만 삭제 가능하도록 확인
-        if (user.role != entity.author.role && user.id != entity.author.id) throw InvalidCredentialException("권한이 없습니다.")
+        if (user.role != entity.author.role && user.id != entity.author.id)
+            throw InvalidCredentialException("권한이 없습니다.")
 
         postRepository.delete(entity)}
     }

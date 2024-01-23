@@ -1,15 +1,19 @@
 package com.teamsparta.bunnies.domain.post.controller
 
+import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.post.dto.request.CreatePostDto
 import com.teamsparta.bunnies.domain.post.dto.request.UpdatePostDto
 import com.teamsparta.bunnies.domain.post.dto.response.PostDetailResponseDto
 import com.teamsparta.bunnies.domain.post.dto.response.PostResponseDto
 import com.teamsparta.bunnies.domain.post.service.PostService
+import com.teamsparta.bunnies.infra.security.UserPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "posts", description = "게시글 API")
@@ -42,43 +46,51 @@ class PostController(
             .body(postService.getPost(postId))
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Operation(summary = "게시글 작성", description = "게시글을 작성합니다.")
     @PostMapping
     fun createPost(
-        @Valid @RequestBody createPostDto: CreatePostDto
+        @Valid @RequestBody createPostDto: CreatePostDto,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal
     ):ResponseEntity<PostResponseDto>{
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(postService.createPost(createPostDto))
+            .body(postService.createPost(createPostDto, userPrincipal))
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Operation(summary = "게시글 수정", description = "게시글을 수정합니다.")
     @PutMapping("/{postId}")
     fun updatePost(
         @PathVariable postId: Long,
-        @Valid @RequestBody updatePostDto: UpdatePostDto
+        @Valid @RequestBody updatePostDto: UpdatePostDto,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal
     ):ResponseEntity<PostResponseDto>{
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(postService.updatePost(postId, updatePostDto))
+            .body(postService.updatePost(postId, updatePostDto, userPrincipal))
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Operation(summary = "판매된 게시글 상태 변경", description = "게시글 상태를 변경합니다.")
     @PatchMapping("/{postId}")
     fun updateStatus(
-        @PathVariable postId: Long
+        @PathVariable postId: Long,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal
     ): ResponseEntity<PostResponseDto>{
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(postService.updateStatus(postId))
+            .body(postService.updateStatus(postId, userPrincipal))
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
     @DeleteMapping("/{postId}")
     fun deletePost(
-        @PathVariable postId: Long
+        @PathVariable postId: Long,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal
     ): ResponseEntity<Unit>{
-        postService.deletePost(postId)
+        postService.deletePost(postId, userPrincipal)
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
             .build()

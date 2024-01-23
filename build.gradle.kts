@@ -33,10 +33,22 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
+    implementation("org.springframework.boot:spring-boot-starter-validation") //validation
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa") //jpa어노테이션
+
+    implementation("io.jsonwebtoken:jjwt-api:0.12.3") //JWT
+    implementation("org.springframework.boot:spring-boot-starter-security") //Spring Security
+
+//    implementation("com.h2database:h2") // h2 임시 database
+
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3") //JWT
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3") //JWT
+    runtimeOnly("org.postgresql:postgresql")
+
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    runtimeOnly("org.postgresql:postgresql")
+
 }
 
 noArg {

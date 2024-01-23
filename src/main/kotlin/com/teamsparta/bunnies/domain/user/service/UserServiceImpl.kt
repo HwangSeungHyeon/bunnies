@@ -23,7 +23,7 @@ class UserServiceImpl(
 ): UserService {
 
     override fun login(request: LoginRequestDto): LoginResponseDto {
-        val user = userRepository.findByProfileEmail(request.email)
+        val user = userRepository.findByProfileEntityEmail(request.email)
             ?: throw ModelNotFoundException("User", null) //이메일 체크
 
         if (!passwordEncoder.matches(request.password, user.profileEntity.password)) {
@@ -41,7 +41,7 @@ class UserServiceImpl(
 
     override fun signUp(request: SignUpRequestDto): UserResponseDto {
 
-        if (userRepository.existsByProfileEmail(request.email))
+        if (userRepository.existsByProfileEntityEmail(request.email))
             throw IllegalStateException("사용중인 이메일입니다")
 
         return userRepository.save(

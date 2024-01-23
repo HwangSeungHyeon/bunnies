@@ -5,6 +5,7 @@ import com.teamsparta.bunnies.domain.user.dto.request.SignUpRequestDto
 import com.teamsparta.bunnies.domain.user.dto.response.LoginResponseDto
 import com.teamsparta.bunnies.domain.user.dto.response.UserResponseDto
 import com.teamsparta.bunnies.domain.user.service.UserService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -30,6 +31,7 @@ class UserController(
 
     @PostMapping("/signup")
     fun signUp(
+        @Valid
         @RequestBody signUpRequestDto: SignUpRequestDto
     ): ResponseEntity<UserResponseDto> {
         return ResponseEntity

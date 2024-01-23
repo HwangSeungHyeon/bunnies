@@ -1,5 +1,5 @@
 package com.teamsparta.bunnies.domain.user.dto.response
 
-class LoginResponse (
+class LoginResponseDto (
     val accessToken: String
 )

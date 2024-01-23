@@ -1,6 +1,6 @@
 package com.teamsparta.bunnies.domain.user.dto.request
 
-data class SignUpRequest(
+data class SignUpRequestDto(
     val email: String,
     val password: String,
     val nickname: String,

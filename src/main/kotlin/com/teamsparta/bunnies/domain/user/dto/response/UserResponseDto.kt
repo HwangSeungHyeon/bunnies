@@ -1,6 +1,6 @@
 package com.teamsparta.bunnies.domain.user.dto.response
 
-data class UserResponse(
+data class UserResponseDto(
     val email: String,
     val nickname: String,
     val introduction: String,

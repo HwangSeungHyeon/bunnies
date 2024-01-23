@@ -6,7 +6,7 @@ import com.teamsparta.bunnies.domain.user.dto.request.LoginRequestDto
 import com.teamsparta.bunnies.domain.user.dto.request.SignUpRequestDto
 import com.teamsparta.bunnies.domain.user.dto.response.LoginResponseDto
 import com.teamsparta.bunnies.domain.user.dto.response.UserResponseDto
-import com.teamsparta.bunnies.domain.user.model.Profile
+import com.teamsparta.bunnies.domain.user.model.ProfileEntity
 import com.teamsparta.bunnies.domain.user.model.User
 import com.teamsparta.bunnies.domain.user.model.UserRole
 import com.teamsparta.bunnies.domain.user.model.toResponse
@@ -26,14 +26,14 @@ class UserServiceImpl(
         val user = userRepository.findByProfileEmail(request.email)
             ?: throw ModelNotFoundException("User", null) //이메일 체크
 
-        if (!passwordEncoder.matches(request.password, user.profile.password)) {
+        if (!passwordEncoder.matches(request.password, user.profileEntity.password)) {
             throw InvalidCredentialException()
         }
 
         return LoginResponseDto(
             accessToken = jwtPlugin.generateAccessToken(
                 subject = user.id.toString(),
-                email = user.profile.email,
+                email = user.profileEntity.email,
                 role = user.role.name
             )
         )
@@ -46,7 +46,7 @@ class UserServiceImpl(
         return userRepository.save(
             User(
 
-                profile = Profile(
+                profileEntity = ProfileEntity(
                     email = request.email,
                     password = passwordEncoder.encode(request.password),
                     nickname = request.nickname,

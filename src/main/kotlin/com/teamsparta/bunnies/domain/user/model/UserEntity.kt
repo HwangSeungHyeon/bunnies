@@ -8,7 +8,7 @@ import jakarta.persistence.*
 class User(
 
     @Embedded
-    var profile: Profile,
+    var profileEntity: ProfileEntity,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -23,11 +23,11 @@ class User(
 
 fun User.toResponse(): UserResponseDto {
     return UserResponseDto(
-        email = profile.email,
-        nickname = profile.nickname,
-        introduction = profile.introduction.toString(),
-        address = profile.address.toString(),
-        phone = profile.phone.toString(),
+        email = profileEntity.email,
+        nickname = profileEntity.nickname,
+        introduction = profileEntity.introduction.toString(),
+        address = profileEntity.address.toString(),
+        phone = profileEntity.phone.toString(),
         role = role.name
     )
 }

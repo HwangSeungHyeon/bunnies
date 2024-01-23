@@ -4,14 +4,14 @@ import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
 @Embeddable
-class Profile(
-    @Column(name = "email", nullable = false)
+class ProfileEntity(
+    @Column(name = "email")
     var email: String,
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     var password: String,
 
-    @Column(name = "nickname", nullable = false)
+    @Column(name = "nickname")
     var nickname: String,
 
     @Column(name = "introduction")

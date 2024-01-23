@@ -10,8 +10,7 @@ import java.time.LocalDateTime
 
 @EntityListeners(AuditingEntityListener::class)
 @Entity
-@Table(name = "post_test")
-//@Table(name = "post")
+@Table(name = "post")
 class PostEntity private constructor(
     @Column(name = "title")
     var title: String,

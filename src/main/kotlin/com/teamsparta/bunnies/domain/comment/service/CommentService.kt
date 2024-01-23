@@ -1,9 +1,9 @@
-package com.teamsparta.newsfeed.domain.comment.service
+package com.teamsparta.bunnies.domain.comment.service
 
-import com.teamsparta.newsfeed.domain.comment.dto.CommentResponseDto
-import com.teamsparta.newsfeed.domain.comment.dto.CreateCommentRequestDto
-import com.teamsparta.newsfeed.domain.comment.dto.DeleteCommentRequestDto
-import com.teamsparta.newsfeed.domain.comment.dto.UpdateCommentRequestDto
+import com.teamsparta.bunnies.domain.comment.dto.CommentResponseDto
+import com.teamsparta.bunnies.domain.comment.dto.CreateCommentRequestDto
+import com.teamsparta.bunnies.domain.comment.dto.DeleteCommentRequestDto
+import com.teamsparta.bunnies.domain.comment.dto.UpdateCommentRequestDto
 
 interface CommentService {
     fun createComment(request: CreateCommentRequestDto, articleId: Long): CommentResponseDto

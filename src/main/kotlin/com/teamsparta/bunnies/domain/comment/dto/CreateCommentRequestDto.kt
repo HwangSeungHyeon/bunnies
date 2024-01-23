@@ -1,4 +1,4 @@
-package com.teamsparta.newsfeed.domain.comment.dto
+package com.teamsparta.bunnies.domain.comment.dto
 
 
 data class CreateCommentRequestDto(

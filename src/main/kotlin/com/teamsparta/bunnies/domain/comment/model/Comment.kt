@@ -1,9 +1,13 @@
-package com.teamsparta.newsfeed.domain.comment.model
+package com.teamsparta.bunnies.domain.comment.model
 
-import com.teamsparta.newsfeed.domain.BaseTimeEntity
-import com.teamsparta.newsfeed.domain.article.model.Article
-import com.teamsparta.newsfeed.domain.comment.dto.CommentResponseDto
+import com.teamsparta.bunnies.domain.comment.dto.CommentResponseDto
 import jakarta.persistence.*
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.time.LocalDateTime
+
+@EntityListeners(AuditingEntityListener::class)
 @Entity
 @Table(name = "comments")
 class Comment(

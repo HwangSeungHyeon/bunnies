@@ -1,10 +1,10 @@
-package com.teamsparta.newsfeed.domain.comment.controller
+package com.teamsparta.bunnies.domain.comment.controller
 
-import com.teamsparta.newsfeed.domain.comment.dto.CommentResponseDto
-import com.teamsparta.newsfeed.domain.comment.dto.CreateCommentRequestDto
-import com.teamsparta.newsfeed.domain.comment.dto.DeleteCommentRequestDto
-import com.teamsparta.newsfeed.domain.comment.dto.UpdateCommentRequestDto
-import com.teamsparta.newsfeed.domain.comment.service.CommentService
+import com.teamsparta.bunnies.domain.comment.dto.CommentResponseDto
+import com.teamsparta.bunnies.domain.comment.dto.CreateCommentRequestDto
+import com.teamsparta.bunnies.domain.comment.dto.DeleteCommentRequestDto
+import com.teamsparta.bunnies.domain.comment.dto.UpdateCommentRequestDto
+import com.teamsparta.bunnies.domain.comment.service.CommentService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

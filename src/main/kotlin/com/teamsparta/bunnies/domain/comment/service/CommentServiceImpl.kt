@@ -1,49 +1,54 @@
-package com.teamsparta.newsfeed.domain.comment.service
+package com.teamsparta.bunnies.domain.comment.service
 
-import com.teamsparta.newsfeed.domain.article.repository.ArticleRepository
-import com.teamsparta.newsfeed.domain.comment.dto.CommentResponseDto
-import com.teamsparta.newsfeed.domain.comment.dto.CreateCommentRequestDto
-import com.teamsparta.newsfeed.domain.comment.dto.DeleteCommentRequestDto
-import com.teamsparta.newsfeed.domain.comment.dto.UpdateCommentRequestDto
-import com.teamsparta.newsfeed.domain.comment.model.Comment
-import com.teamsparta.newsfeed.domain.comment.model.toResponse
-import com.teamsparta.newsfeed.domain.comment.repository.CommentRepository
-import org.springframework.data.repository.findByIdOrNull
+//import com.teamsparta.bunnies.domain.article.repository.ArticleRepository
+import com.teamsparta.bunnies.domain.comment.dto.CommentResponseDto
+import com.teamsparta.bunnies.domain.comment.dto.CreateCommentRequestDto
+import com.teamsparta.bunnies.domain.comment.dto.DeleteCommentRequestDto
+import com.teamsparta.bunnies.domain.comment.dto.UpdateCommentRequestDto
+import com.teamsparta.bunnies.domain.comment.model.Comment
+import com.teamsparta.bunnies.domain.comment.model.toResponse
+import com.teamsparta.bunnies.domain.comment.repository.CommentRepository
+//import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+//import org.springframework.transaction.annotation.Transactional
+
 @Service
 class CommentServiceImpl(
-        val articleRepository: ArticleRepository,
+        //val postRepository: PostRepository,
         val commentRepository: CommentRepository
 ) : CommentService {
 
-    @Transactional
+    // @Transactional
     override fun createComment(request: CreateCommentRequestDto, articleId: Long): CommentResponseDto {
-        val targetArticle = articleRepository.findByIdOrNull(articleId)
-                ?: throw Exception("target article is not found")
+        TODO("Not yet implemented")
 
-        val comment = Comment(
-                article = targetArticle,
-                comment = request.comment,
-                name = request.name
-        )
-        commentRepository.save(comment)
+        //        val targetArticle = articleRepository.findByIdOrNull(articleId)
+//                ?: throw Exception("target article is not found")
+//
+//        val comment = Comment(
+//               // article = targetArticle,
+//                comment = request.comment,
+//                name = request.name
+//        )
+        //   commentRepository.save(comment)
 
-        return comment.toResponse()
+//        return comment.toResponse()
     }
-
-    @Transactional
+    //@Transactional
     override fun updateComment(request: UpdateCommentRequestDto): CommentResponseDto {
-        val foundComment = request.id.let { commentRepository.findByIdOrNull(it) }
-                ?: throw Exception("target comment is not found")
+       // val foundComment = request.id.let { commentRepository.findByIdOrNull(it) }
+//                ?: throw Exception("target comment is not found")
 
-        foundComment.checkAuthentication(request.name)
-        foundComment.comment = request.comment
+        //foundComment.checkAuthentication(request.name)
+      //  foundComment.comment = request.comment
 
 //        commentRepository.save(foundComment)
 
-        return foundComment.toResponse()
+       // return foundComment.toResponse()
+
+        TODO("Not yet implemented")
     }
 
     @Transactional

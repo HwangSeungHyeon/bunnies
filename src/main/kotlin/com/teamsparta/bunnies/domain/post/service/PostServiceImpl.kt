@@ -142,6 +142,7 @@ class PostServiceImpl(
         TODO("Not yet implemented")
     }
 
+    @Transactional
     override fun deleteLikes(postId: Long, userPrincipal: UserPrincipal) {
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("Post", postId)

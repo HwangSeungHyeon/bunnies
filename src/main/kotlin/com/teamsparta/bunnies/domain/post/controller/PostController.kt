@@ -125,7 +125,7 @@ class PostController(
         @PathVariable postId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal
     ): ResponseEntity<String>{
-        postService.deletePost(postId, userPrincipal)
+        postService.deleteLikes(postId, userPrincipal)
 
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)

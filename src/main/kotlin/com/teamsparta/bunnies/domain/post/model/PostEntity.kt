@@ -26,7 +26,10 @@ class PostEntity private constructor(
     @JoinColumn(name = "user_id")
     var author: UserEntity,
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+//    @Column(name = "user_id")
+//    var userId: Long
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     var likes: MutableList<LikeEntity> = mutableListOf()
 
 ) {

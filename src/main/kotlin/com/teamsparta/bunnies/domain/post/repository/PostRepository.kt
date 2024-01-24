@@ -5,5 +5,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface PostRepository : JpaRepository<PostEntity, Long>{
+
     fun findAllBy(pageable: Pageable): List<PostEntity>
+
 }

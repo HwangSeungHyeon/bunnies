@@ -31,8 +31,8 @@ class UserController(
     private val userService: UserService
 ) {
 
-    @Operation(summary = "로그인")
     @PostMapping("/login")
+    @Operation(summary = "로그인", description = "로그인을 합니다.")
     fun login(
         @RequestBody loginRequestDto: LoginRequestDto
     ): ResponseEntity<LoginResponseDto> {
@@ -42,8 +42,8 @@ class UserController(
 
     }
 
-    @Operation(summary = "회원가입")
     @PostMapping("/signup")
+    @Operation(summary = "회원가입", description = "회원가입을 합니다.")
     fun signUp(
         @Valid
         @RequestBody signUpRequestDto: SignUpRequestDto
@@ -107,9 +107,5 @@ class UserController(
             .status(HttpStatus.NO_CONTENT)
             .build()
     }
-
-
-
-
 
 }

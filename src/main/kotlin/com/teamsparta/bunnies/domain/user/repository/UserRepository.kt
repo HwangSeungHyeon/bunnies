@@ -9,7 +9,4 @@ interface UserRepository: JpaRepository <UserEntity, Long> {
 
     fun findByProfileEntityEmail(email:String) : UserEntity?
 
-//    fun findByProfileEntityNickname(nickname: String): UserEntity?
-
-//    fun findTop3ByProfileEntityPasswordOrderBy(profileEntity: ProfileEntity):
 }

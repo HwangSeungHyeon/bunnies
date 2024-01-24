@@ -2,6 +2,7 @@ package com.teamsparta.bunnies.domain.post.model
 
 import com.teamsparta.bunnies.domain.post.dto.request.CreatePostDto
 import com.teamsparta.bunnies.domain.post.dto.request.UpdatePostDto
+import com.teamsparta.bunnies.domain.user.model.UserEntity
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
@@ -20,6 +21,11 @@ class PostEntity private constructor(
 
     @Column(name = "description")
     var description: String,
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    var author: UserEntity
+
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,17 +50,19 @@ class PostEntity private constructor(
     }
 
     fun isComplete(){
-        status = true
+        status = !status
     }
 
     companion object{
         fun toEntity(
-            createPostDto: CreatePostDto
+            createPostDto: CreatePostDto,
+            userEntity: UserEntity
         ): PostEntity{
             return PostEntity(
                 title = createPostDto.title,
                 price = createPostDto.price,
-                description = createPostDto.description
+                description = createPostDto.description,
+                author = userEntity
             )
         }
     }

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern
 data class UpdateUserProfileRequestDto(
 
     @field:Email(message = "이메일 형식이 아닙니다.")
-    @Schema(description = "email@email.com")
+    @Schema(description = "이메일", example = "email@email.com")
     val email: String,//1. 중복검사 + 2. 이메일형식인지 확인
 
     @field:Pattern(

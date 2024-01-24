@@ -2,11 +2,14 @@ package com.teamsparta.bunnies.domain.post.service
 
 import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.exception.ModelNotFoundException
+import com.teamsparta.bunnies.domain.exception.UnauthorizedOperationException
 import com.teamsparta.bunnies.domain.post.dto.request.CreatePostDto
 import com.teamsparta.bunnies.domain.post.dto.request.UpdatePostDto
 import com.teamsparta.bunnies.domain.post.dto.response.PostDetailResponseDto
 import com.teamsparta.bunnies.domain.post.dto.response.PostResponseDto
+import com.teamsparta.bunnies.domain.post.model.LikeEntity
 import com.teamsparta.bunnies.domain.post.model.PostEntity
+import com.teamsparta.bunnies.domain.post.repository.LikeRepository
 import com.teamsparta.bunnies.domain.post.repository.PostRepository
 import com.teamsparta.bunnies.domain.user.repository.UserRepository
 import com.teamsparta.bunnies.infra.security.UserPrincipal
@@ -19,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class PostServiceImpl(
     private val postRepository: PostRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val likeRepository: LikeRepository
 ): PostService {
 
     @Transactional(readOnly = true)
@@ -47,9 +51,9 @@ class PostServiceImpl(
     ): PostResponseDto {
         val user = userRepository.findByIdOrNull(userPrincipal.id)
             ?: throw ModelNotFoundException("User", userPrincipal.id)
-        val entity = postRepository.save(PostEntity.toEntity(createPostDto, user))
+        val post = postRepository.save(PostEntity.toEntity(createPostDto, user))
 
-        return PostResponseDto.toResponse(entity)
+        return PostResponseDto.toResponse(post)
     }
 
     @Transactional
@@ -61,14 +65,14 @@ class PostServiceImpl(
         val user = userRepository.findByIdOrNull(userPrincipal.id)
             ?: throw ModelNotFoundException("User", userPrincipal.id)
 
-        val entity = postRepository.findByIdOrNull(postId)
+        val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("Post", postId)
 
         // role이 ADMIN이거나 본인인 경우에만 수정 가능하도록 확인
-        if (user.role != entity.author.role && user.id != entity.author.id)
+        if (user.role != post.author.role && user.id != post.author.id)
             throw InvalidCredentialException("권한이 없습니다.")
 
-        return entity
+        return post
             .apply { update(updatePostDto) }
             .let { PostResponseDto.toResponse(it) }
     }
@@ -81,14 +85,14 @@ class PostServiceImpl(
         val user = userRepository.findByIdOrNull(userPrincipal.id)
             ?: throw ModelNotFoundException("User", userPrincipal.id)
 
-        val entity = postRepository.findByIdOrNull(postId)
+        val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("Post", postId)
 
         // role이 ADMIN이거나 본인인 경우에만 수정 가능하도록 확인
-        if (user.role != entity.author.role && user.id != entity.author.id)
+        if (user.role != post.author.role && user.id != post.author.id)
             throw InvalidCredentialException("권한이 없습니다.")
 
-        return entity
+        return post
             .apply { isComplete() }
             .let { PostResponseDto.toResponse(it) }
     }
@@ -98,15 +102,55 @@ class PostServiceImpl(
         postId: Long,
         userPrincipal: UserPrincipal
     ) {
-        val entity = postRepository.findByIdOrNull(postId)
+        val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("Post", postId)
 
         val user = userRepository.findByIdOrNull(userPrincipal.id)
             ?: throw ModelNotFoundException("User", userPrincipal.id)
 
         // role이 ADMIN이거나 본인인 경우에만 삭제 가능하도록 확인
-        if (user.role != entity.author.role && user.id != entity.author.id)
+        if (user.role != post.author.role && user.id != post.author.id)
             throw InvalidCredentialException("권한이 없습니다.")
 
-        postRepository.delete(entity)}
+        postRepository.delete(post)
     }
+
+    override fun addLikes(
+        postId: Long,
+        userPrincipal: UserPrincipal
+    ) {
+        val post = postRepository.findByIdOrNull(postId)
+            ?: throw ModelNotFoundException("Post", postId)
+
+        if (post.author.id == userPrincipal.id)
+            throw UnauthorizedOperationException("자신이 작성한 게시글에는 좋아요를 누를 수 없습니다.")
+
+        if(likeRepository.existsByPostIdAndUserId(postId, userPrincipal.id)){
+            throw IllegalStateException("이미 좋아요를 누르셨습니다.")
+        }
+
+        val user = userRepository.findByIdOrNull(userPrincipal.id)
+            ?: throw ModelNotFoundException("User", userPrincipal.id)
+
+        likeRepository.save(LikeEntity.toEntity(post, user))
+    }
+
+    override fun getLikes(
+        postId: Long,
+        userPrincipal: UserPrincipal
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun deleteLikes(postId: Long, userPrincipal: UserPrincipal) {
+        val post = postRepository.findByIdOrNull(postId)
+            ?: throw ModelNotFoundException("Post", postId)
+
+        if (post.author.id == userPrincipal.id)
+            throw UnauthorizedOperationException("자신이 작성한 게시글에는 좋아요를 누를 수 없습니다.")
+
+        if(likeRepository.existsByPostIdAndUserId(postId, userPrincipal.id)){
+            likeRepository.deleteByPostIdAndUserId(postId, userPrincipal.id)
+        }
+    }
+}

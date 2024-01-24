@@ -1,6 +1,5 @@
 package com.teamsparta.bunnies.domain.post.controller
 
-import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.post.dto.request.CreatePostDto
 import com.teamsparta.bunnies.domain.post.dto.request.UpdatePostDto
 import com.teamsparta.bunnies.domain.post.dto.response.PostDetailResponseDto
@@ -94,5 +93,42 @@ class PostController(
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
             .build()
+    }
+
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @Operation(summary = "관심 목록 등록", description = "게시글을 관심 목록에 등록합니다.")
+    @PostMapping("/{postId}/likes")
+    fun addLikes(
+        @PathVariable postId: Long,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal
+    ): ResponseEntity<String>{
+        postService.addLikes(postId, userPrincipal)
+
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body("관심 목록에 등록하였습니다.")
+    }
+
+    @Operation(summary = "관심 목록 개수 조회", description = "관심 목록에 추가된 게시글의 개수를 조회합니다.")
+    @GetMapping("/{postId}/likes")
+    fun getLikes(
+        @PathVariable postId: Long,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal
+    ){
+        postService.getLikes(postId, userPrincipal)
+    }
+
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @Operation(summary = "관심 목록 해제", description = "게시글을 관심 목록에서 제외합니다.")
+    @DeleteMapping("/{postId}/likes")
+    fun deleteLikes(
+        @PathVariable postId: Long,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal
+    ): ResponseEntity<String>{
+        postService.deletePost(postId, userPrincipal)
+
+        return ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .body("관심 목록에서 제외하였습니다.")
     }
 }

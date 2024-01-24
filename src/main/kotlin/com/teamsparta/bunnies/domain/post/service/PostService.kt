@@ -18,4 +18,11 @@ interface PostService {
     fun updateStatus(postId: Long, userPrincipal: UserPrincipal): PostResponseDto
 
     fun deletePost(postId: Long, userPrincipal: UserPrincipal)
+
+    fun addLikes(postId: Long, userPrincipal: UserPrincipal)
+
+    fun getLikes(postId: Long, userPrincipal: UserPrincipal)
+
+    fun deleteLikes(postId: Long, userPrincipal: UserPrincipal)
+
 }

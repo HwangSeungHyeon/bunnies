@@ -111,7 +111,7 @@ class UserServiceImpl(
         if(!passwordEncoder.matches(changePasswordRequestDto.password, user.profileEntity.password))
             throw IllegalStateException("틀린 비밀번호입니다")
 
-        user.profileEntity.password = passwordEncoder.encode(changePasswordRequestDto.newPassword)
+             user.profileEntity.password = passwordEncoder.encode(changePasswordRequestDto.newPassword)
 
         return userRepository.save(user).toResponse()
     }

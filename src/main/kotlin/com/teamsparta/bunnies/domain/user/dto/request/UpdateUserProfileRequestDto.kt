@@ -5,7 +5,9 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.Pattern
 
 data class UpdateUserProfileRequestDto(
+
     @field:Email(message = "이메일 형식이 아닙니다.")
+    @Schema(description = "email@email.com")
     val email: String,//1. 중복검사 + 2. 이메일형식인지 확인
 
     @field:Pattern(
@@ -16,10 +18,13 @@ data class UpdateUserProfileRequestDto(
 
     @Schema(description = "소개")
     val introduction: String?,
+
     @Schema(description = "주소")
     val address: String?,
+
     @Schema(description = "번호", example = "010-0000-0000")
     val phone: String?,
+
     @Schema(description = "비밀번호", example = "Password12!")
     val password: String
 )

@@ -64,8 +64,8 @@ class PostServiceImpl(
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("Post", postId)
 
-        // 본인인 경우에만 수정 가능하도록 확인
-        if (userPrincipal.id != post.userId)
+        // ADMIN 또는 본인인 경우에만 수정 가능하도록 확인
+        if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
             throw InvalidCredentialException("권한이 없습니다.")
 
         return post
@@ -82,7 +82,7 @@ class PostServiceImpl(
             ?: throw ModelNotFoundException("Post", postId)
 
         // role이 ADMIN이거나 본인인 경우에만 수정 가능하도록 확인
-        if (userPrincipal.id != post.userId)
+        if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
             throw InvalidCredentialException("권한이 없습니다.")
 
         return post
@@ -99,7 +99,7 @@ class PostServiceImpl(
             ?: throw ModelNotFoundException("Post", postId)
 
         // role이 ADMIN이거나 본인인 경우에만 삭제 가능하도록 확인
-        if (userPrincipal.id != post.userId)
+        if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
             throw InvalidCredentialException("권한이 없습니다.")
 
         postRepository.delete(post)
@@ -111,6 +111,8 @@ class PostServiceImpl(
     ) {
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("Post", postId)
+
+        println(userPrincipal.authorities)
 
         if(likeRepository.existsByPostIdAndUserId(postId, userPrincipal.id)){
             throw IllegalStateException("이미 좋아요를 누르셨습니다.")

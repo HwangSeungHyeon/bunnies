@@ -95,7 +95,7 @@ class PostController(
             .build()
     }
 
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Operation(summary = "관심 목록 등록", description = "게시글을 관심 목록에 등록합니다.")
     @PostMapping("/{postId}/likes")
     fun addLikes(
@@ -114,11 +114,13 @@ class PostController(
     fun getLikes(
         @PathVariable postId: Long,
         @AuthenticationPrincipal userPrincipal: UserPrincipal
-    ){
-        postService.getLikes(postId, userPrincipal)
+    ): ResponseEntity<Int>{
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(postService.getLikes(postId, userPrincipal))
     }
 
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Operation(summary = "관심 목록 해제", description = "게시글을 관심 목록에서 제외합니다.")
     @DeleteMapping("/{postId}/likes")
     fun deleteLikes(

@@ -7,4 +7,6 @@ interface LikeRepository: JpaRepository<LikeEntity, Long> {
     fun existsByPostIdAndUserId(postId: Long, userId: Long): Boolean
 
     fun deleteByPostIdAndUserId(postId: Long, userId: Long)
+
+    fun countByPostId(postId: Long): Int
 }

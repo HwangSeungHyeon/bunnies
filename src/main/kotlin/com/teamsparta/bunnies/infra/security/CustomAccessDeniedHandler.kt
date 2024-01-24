@@ -21,7 +21,7 @@ class CustomAccessDeniedHandler: AccessDeniedHandler {
         response.characterEncoding = "UTF-8"
 
         val objectMapper = ObjectMapper()
-        val jsonString = objectMapper.writeValueAsString(ErrorResponseDto("No permission to run API"))
+        val jsonString = objectMapper.writeValueAsString(ErrorResponseDto("접근할 수 있는 권한이 없습니다."))
         response.writer.write(jsonString)
     }
 }

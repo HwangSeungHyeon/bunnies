@@ -1,5 +1,7 @@
 package com.teamsparta.bunnies.domain.user.model
 
+import com.teamsparta.bunnies.domain.post.model.LikeEntity
+import com.teamsparta.bunnies.domain.post.model.PostEntity
 import com.teamsparta.bunnies.domain.user.dto.response.UserResponseDto
 import jakarta.persistence.*
 
@@ -12,7 +14,7 @@ class UserEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    val role: UserRole
+    val role: UserRole,
 ){
 
     @Id

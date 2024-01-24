@@ -6,7 +6,6 @@ plugins {
     kotlin("jvm") version "1.9.22"
     kotlin("plugin.spring") version "1.9.22"
     kotlin("plugin.noarg") version "1.8.22"
-//    kotlin("kapt") version "1.8.22"
 }
 
 group = "com.teamsparta"
@@ -38,9 +37,6 @@ dependencies {
 
     implementation("io.jsonwebtoken:jjwt-api:0.12.3") //JWT
     implementation("org.springframework.boot:spring-boot-starter-security") //Spring Security
-
-//    implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
-//    kapt("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
 
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3") //JWT
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3") //JWT

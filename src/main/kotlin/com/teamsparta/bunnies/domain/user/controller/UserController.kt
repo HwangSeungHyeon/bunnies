@@ -42,7 +42,7 @@ class UserController(
 
     }
 
-    @Operation(summary = "회원가입", description = "회원가입을 합니다.")
+    @Operation(summary = "사용자 회원가입", description = "사용자 회원가입을 합니다.")
     @PostMapping("/signup")
     fun signUp(
         @Valid
@@ -53,7 +53,7 @@ class UserController(
             .body(userService.signUp(signUpRequestDto))
     }
 
-    @Operation(summary = "사용자 아이디로 조회", description = "다른 사용자 조회")
+    @Operation(summary = "타인 프로필 조회", description = "타인 프로필 조회 합니다.")
     @GetMapping("/users/{userid}/profiles")
     fun getUserProfileById(
         @PathVariable userid: Long
@@ -63,7 +63,7 @@ class UserController(
             .body(userService.getUserProfileById(userid))
     }
 
-    @Operation(summary = "내 프로필", description = "내 프로필 조회")
+    @Operation(summary = "본인 프로필 조회", description = "본인 프로필 조회 합니다.")
     @GetMapping("/users/{userid}/profile")
     fun getUserProfile(
         @AuthenticationPrincipal userPrincipal: UserPrincipal
@@ -73,7 +73,7 @@ class UserController(
             .body(userService.getUserProfile(userPrincipal))
     }
 
-    @Operation(summary = "프로필 수정", description = "내 프로필 수정")
+    @Operation(summary = "본인 프로필 수정", description = "본인 프로필 수정 합니다.")
     @PutMapping("/users/{userid}")
     fun updateUserProfile(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,

@@ -9,6 +9,7 @@ import com.teamsparta.bunnies.domain.comment.model.toResponse
 import com.teamsparta.bunnies.domain.comment.repository.CommentRepository
 import com.teamsparta.bunnies.domain.exception.ModelNotFoundException
 import com.teamsparta.bunnies.domain.post.repository.PostRepository
+import com.teamsparta.bunnies.infra.security.UserPrincipal
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,7 +22,11 @@ class CommentServiceImpl(
 ) : CommentService {
 
     @Transactional
-    override fun createComment(request: CreateCommentRequestDto, postId: Long): CommentResponseDto {
+    override fun createComment(
+        request: CreateCommentRequestDto,
+        postId: Long,
+        userPrincipal: UserPrincipal
+    ): CommentResponseDto {
 
         // 게시글을 찾아오고, 없으면 예외를 던집니다.
              val targetPost = postRepository.findByIdOrNull(postId)
@@ -30,7 +35,7 @@ class CommentServiceImpl(
         val comment = Comment(
                post = targetPost,
                comment = request.comment,
-//               name = request.name
+               userId = userPrincipal.id
          )
         // 댓글을 저장합니다.
            commentRepository.save(comment)

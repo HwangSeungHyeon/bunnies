@@ -15,8 +15,8 @@ class Comment(
         @Column(name = "comment")
         var comment: String,
 
-  //      @Column(name = "name")
-    //    var name: String,
+        @Column(name = "user_id")
+        var userId: Long,
 
         @ManyToOne(fetch = FetchType.LAZY)// JPA(Java Persistence API)에서 "Basic" 타입으로 지정된 필드에 대해 "Persistence Entity"사용불가
         @JoinColumn(name = "postId")

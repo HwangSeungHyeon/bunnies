@@ -66,7 +66,7 @@ class PostServiceImpl(
 
         // ADMIN 또는 본인인 경우에만 수정 가능하도록 확인
         if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
-            throw InvalidCredentialException("권한이 없습니다.")
+            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
 
         return post
             .apply { update(updatePostDto) }
@@ -83,7 +83,7 @@ class PostServiceImpl(
 
         // role이 ADMIN이거나 본인인 경우에만 수정 가능하도록 확인
         if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
-            throw InvalidCredentialException("권한이 없습니다.")
+            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
 
         return post
             .apply { isComplete() }
@@ -100,7 +100,7 @@ class PostServiceImpl(
 
         // role이 ADMIN이거나 본인인 경우에만 삭제 가능하도록 확인
         if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
-            throw InvalidCredentialException("권한이 없습니다.")
+            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
 
         postRepository.delete(post)
     }

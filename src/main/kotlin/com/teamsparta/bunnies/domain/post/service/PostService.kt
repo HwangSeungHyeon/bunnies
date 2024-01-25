@@ -21,7 +21,7 @@ interface PostService {
 
     fun addLikes(postId: Long, userPrincipal: UserPrincipal)
 
-    fun getLikes(postId: Long, userPrincipal: UserPrincipal)
+    fun getLikes(postId: Long, userPrincipal: UserPrincipal): Int
 
     fun deleteLikes(postId: Long, userPrincipal: UserPrincipal)
 

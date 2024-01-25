@@ -45,7 +45,7 @@ data class PostDetailResponseDto(
                 createdAt = postEntity.createdAt!!,
                 updateAt = postEntity.updateAt!!,
                 //choi
-                comment = postEntity.comment.map { it.toResponse() }
+                comment = postEntity.commentEntity.map { it.toResponse() }
             )
         }
     }

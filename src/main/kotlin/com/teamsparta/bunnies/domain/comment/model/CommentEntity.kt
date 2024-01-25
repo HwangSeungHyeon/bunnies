@@ -3,6 +3,7 @@ package com.teamsparta.bunnies.domain.comment.model
 import com.teamsparta.bunnies.domain.comment.dto.CommentResponseDto
 import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.post.model.PostEntity
+import com.teamsparta.bunnies.domain.user.model.UserEntity
 import com.teamsparta.bunnies.infra.security.UserPrincipal
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
@@ -12,16 +13,17 @@ import java.time.LocalDateTime
 
 @EntityListeners(AuditingEntityListener::class)
 @Entity
-@Table(name = "comment")
-class Comment(
+@Table(name = "comment2")
+class CommentEntity(
         @Column(name = "comment")
         var comment: String,
 
-        @Column(name = "user_id")
-        var userId: Long,
+        @ManyToOne
+        @JoinColumn(name = "user_id")
+        var user: UserEntity,
 
         @ManyToOne(fetch = FetchType.LAZY)// JPA(Java Persistence API)에서 "Basic" 타입으로 지정된 필드에 대해 "Persistence Entity"사용불가
-        @JoinColumn(name = "postId")
+        @JoinColumn(name = "post_id")
         val post: PostEntity
 ) {
     @Id
@@ -43,7 +45,7 @@ class Comment(
 //    }
 }
 
-fun Comment.toResponse(): CommentResponseDto {
+fun CommentEntity.toResponse(): CommentResponseDto {
     return CommentResponseDto(
         id = id!!,
         comment = comment,
@@ -52,9 +54,9 @@ fun Comment.toResponse(): CommentResponseDto {
 }
 
 fun checkCommentPermission(
-        userPrincipal: UserPrincipal,
-        foundComment: Comment
+    userPrincipal: UserPrincipal,
+    foundCommentEntity: CommentEntity
     ) {
-        if ((userPrincipal.id != foundComment.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
+        if ((userPrincipal.id != foundCommentEntity.user.id) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
             throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
     }

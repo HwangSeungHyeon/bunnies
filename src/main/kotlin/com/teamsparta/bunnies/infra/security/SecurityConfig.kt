@@ -23,11 +23,11 @@ class SecurityConfig(
 
     private val allowedUrls = arrayOf(
         "/", "/swagger-ui/**", "/v3/**",
-        "/api/posts/**", "/api/admin/**"
+        "/api/posts/**", "/api/admins/**", "/api/users/**"
     )
 
     private val anonymousUrls = arrayOf(
-        "/api/signup", "/api/login"
+        "/api/users/signup", "/api/users/login"
     )
 
     @Bean

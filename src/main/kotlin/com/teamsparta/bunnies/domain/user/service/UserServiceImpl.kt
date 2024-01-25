@@ -45,6 +45,25 @@ class UserServiceImpl(
         )
     }
 
+    override fun adminSignUp(request: SignUpRequestDto): UserResponseDto {
+        if (userRepository.existsByProfileEntityEmail(request.email))
+            throw IllegalStateException("사용중인 이메일입니다")
+
+        return userRepository.save(
+            UserEntity(
+
+                profileEntity = ProfileEntity(
+                    email = request.email,
+                    password = passwordEncoder.encode(request.password),
+                    nickname = request.nickname,
+                    introduction = request.introduction,
+                    address = request.address,
+                    phone = request.phone),
+                role = UserRole.ADMIN
+            )
+        ).toResponse()
+    }
+
     override fun signUp(request: SignUpRequestDto): UserResponseDto {
 
         if (userRepository.existsByProfileEntityEmail(request.email))

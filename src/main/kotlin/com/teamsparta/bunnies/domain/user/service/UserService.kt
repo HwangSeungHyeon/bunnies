@@ -10,6 +10,8 @@ import com.teamsparta.bunnies.infra.security.UserPrincipal
 
 interface UserService {
 
+    fun adminSignUp(request: SignUpRequestDto): UserResponseDto
+
     fun signUp(request: SignUpRequestDto): UserResponseDto
 
     fun login(request: LoginRequestDto): LoginResponseDto

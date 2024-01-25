@@ -1,6 +1,7 @@
 package com.teamsparta.bunnies.domain.post.model
 
 import com.teamsparta.bunnies.domain.comment.model.Comment
+import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.post.dto.request.CreatePostDto
 import com.teamsparta.bunnies.domain.post.dto.request.UpdatePostDto
 import com.teamsparta.bunnies.domain.user.model.UserEntity
@@ -71,6 +72,14 @@ class PostEntity private constructor(
                 description = createPostDto.description,
                 userId = userPrincipal.id
             )
+        }
+
+        fun checkPostPermission(
+            userPrincipal: UserPrincipal,
+            post: PostEntity
+        ) {
+            if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
+                throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
         }
     }
 }

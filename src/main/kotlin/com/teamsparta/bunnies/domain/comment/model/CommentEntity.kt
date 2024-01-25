@@ -1,7 +1,9 @@
 package com.teamsparta.bunnies.domain.comment.model
 
 import com.teamsparta.bunnies.domain.comment.dto.CommentResponseDto
+import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.post.model.PostEntity
+import com.teamsparta.bunnies.infra.security.UserPrincipal
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
@@ -43,8 +45,16 @@ class Comment(
 
 fun Comment.toResponse(): CommentResponseDto {
     return CommentResponseDto(
-            id = id!!,
-            comment = comment,
-   //         name = name,
+        id = id!!,
+        comment = comment,
+        //         name = name,
     )
 }
+
+fun checkCommentPermission(
+        userPrincipal: UserPrincipal,
+        foundComment: Comment
+    ) {
+        if ((userPrincipal.id != foundComment.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
+            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
+    }

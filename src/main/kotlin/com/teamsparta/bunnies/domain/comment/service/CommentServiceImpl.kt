@@ -5,9 +5,9 @@ import com.teamsparta.bunnies.domain.comment.dto.CommentResponseDto
 import com.teamsparta.bunnies.domain.comment.dto.CreateCommentRequestDto
 import com.teamsparta.bunnies.domain.comment.dto.UpdateCommentRequestDto
 import com.teamsparta.bunnies.domain.comment.model.Comment
+import com.teamsparta.bunnies.domain.comment.model.checkCommentPermission
 import com.teamsparta.bunnies.domain.comment.model.toResponse
 import com.teamsparta.bunnies.domain.comment.repository.CommentRepository
-import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.exception.ModelNotFoundException
 import com.teamsparta.bunnies.domain.post.repository.PostRepository
 import com.teamsparta.bunnies.infra.security.UserPrincipal
@@ -85,13 +85,4 @@ class CommentServiceImpl(
 //해당하는 댓글의 ID를 사용하여 데이터베이스에서 해당 댓글을 삭제
         commentRepository.deleteById(commentId)
     }
-
-    private fun checkCommentPermission(
-        userPrincipal: UserPrincipal,
-        foundComment: Comment
-    ) {
-        if ((userPrincipal.id != foundComment.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
-            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
-    }
-
 }

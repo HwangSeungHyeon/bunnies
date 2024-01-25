@@ -1,6 +1,5 @@
 package com.teamsparta.bunnies.domain.post.service
 
-import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.exception.ModelNotFoundException
 import com.teamsparta.bunnies.domain.exception.UnauthorizedOperationException
 import com.teamsparta.bunnies.domain.post.dto.request.CreatePostDto
@@ -9,6 +8,7 @@ import com.teamsparta.bunnies.domain.post.dto.response.PostDetailResponseDto
 import com.teamsparta.bunnies.domain.post.dto.response.PostResponseDto
 import com.teamsparta.bunnies.domain.post.model.LikeEntity
 import com.teamsparta.bunnies.domain.post.model.PostEntity
+import com.teamsparta.bunnies.domain.post.model.PostEntity.Companion.checkPostPermission
 import com.teamsparta.bunnies.domain.post.repository.LikeRepository
 import com.teamsparta.bunnies.domain.post.repository.PostRepository
 import com.teamsparta.bunnies.domain.user.repository.UserRepository
@@ -137,11 +137,5 @@ class PostServiceImpl(
         }
     }
 
-    private fun checkPostPermission(
-        userPrincipal: UserPrincipal,
-        post: PostEntity
-    ) {
-        if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
-            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
-    }
+
 }

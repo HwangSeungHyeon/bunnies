@@ -2,7 +2,6 @@ package com.teamsparta.bunnies.domain.comment.controller
 
 import com.teamsparta.bunnies.domain.comment.dto.CommentResponseDto
 import com.teamsparta.bunnies.domain.comment.dto.CreateCommentRequestDto
-import com.teamsparta.bunnies.domain.comment.dto.DeleteCommentRequestDto
 import com.teamsparta.bunnies.domain.comment.dto.UpdateCommentRequestDto
 import com.teamsparta.bunnies.domain.comment.service.CommentService
 import io.swagger.v3.oas.annotations.Operation
@@ -38,7 +37,7 @@ class CommentController(
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(commentService.updateComment(updateCommentRequestDto))
+                .body(commentService.updateComment(postId, commentId, updateCommentRequestDto))
     }
 
     @Operation(summary = "comment 삭제")
@@ -48,11 +47,11 @@ class CommentController(
         @PathVariable commentId: Long,
     ): ResponseEntity<Unit> {
 
-        commentService.deleteComment(deleteCommentRequestDto)
+        commentService.deleteComment(commentId)
 
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("comment 가 삭제되었습니다.")
+            .status(HttpStatus.NO_CONTENT)
+            .build()
     }
 
 

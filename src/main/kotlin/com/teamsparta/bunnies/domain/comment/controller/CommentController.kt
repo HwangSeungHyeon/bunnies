@@ -54,9 +54,10 @@ class CommentController(
     fun deleteComment(
         @PathVariable postId: Long,
         @PathVariable commentId: Long,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal
     ): ResponseEntity<Unit> {
 
-        commentService.deleteComment(commentId)
+        commentService.deleteComment(commentId, userPrincipal)
 
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)

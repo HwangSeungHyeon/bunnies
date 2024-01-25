@@ -127,8 +127,8 @@ class PostServiceImpl(
     override fun getLikes(
         postId: Long,
         userPrincipal: UserPrincipal
-    ) {
-        TODO("Not yet implemented")
+    ): Int {
+        return likeRepository.countByPostId(postId)
     }
 
     @Transactional

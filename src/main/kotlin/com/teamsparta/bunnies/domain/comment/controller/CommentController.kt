@@ -5,11 +5,12 @@ import com.teamsparta.bunnies.domain.comment.dto.CreateCommentRequestDto
 import com.teamsparta.bunnies.domain.comment.dto.UpdateCommentRequestDto
 import com.teamsparta.bunnies.domain.comment.service.CommentService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-
+@Tag(name = "comments", description = "댓글 API")
 @RequestMapping("/api/posts/{postId}/comments")
 @RestController
 class CommentController(

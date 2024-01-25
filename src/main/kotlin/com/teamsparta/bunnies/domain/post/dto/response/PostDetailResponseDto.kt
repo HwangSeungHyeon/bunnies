@@ -1,5 +1,7 @@
 package com.teamsparta.bunnies.domain.post.dto.response
 
+import com.teamsparta.bunnies.domain.comment.model.toResponse
+import com.teamsparta.bunnies.domain.comment.dto.CommentResponseDto
 import com.teamsparta.bunnies.domain.post.model.PostEntity
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
@@ -25,7 +27,10 @@ data class PostDetailResponseDto(
     val createdAt: LocalDateTime,
 
     @Schema(description = "게시글이 수정된 시간")
-    val updateAt: LocalDateTime
+    val updateAt: LocalDateTime,
+//choi
+    @Schema(description = "게시글에 달린 댓글", example = "string")
+    val comment: List<CommentResponseDto>,
 ) {
     companion object {
         fun toResponse(
@@ -38,7 +43,9 @@ data class PostDetailResponseDto(
                 description = postEntity.description,
                 status = postEntity.status,
                 createdAt = postEntity.createdAt!!,
-                updateAt = postEntity.updateAt!!
+                updateAt = postEntity.updateAt!!,
+                //choi
+                comment = postEntity.comment.map { it.toResponse() }
             )
         }
     }

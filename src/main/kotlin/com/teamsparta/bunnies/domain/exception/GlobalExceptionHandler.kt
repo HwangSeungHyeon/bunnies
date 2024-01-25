@@ -22,4 +22,26 @@ class GlobalExceptionHandler {
             .status(HttpStatus.NOT_FOUND)
             .body(ErrorResponseDto(e.message))
     }
+
+    @ExceptionHandler(NotAuthorizationException::class)
+    fun handleNotAuthorizationException(e: NotAuthorizationException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(ErrorResponseDto(e.message))
+    }
+
+    @ExceptionHandler(UnauthorizedOperationException::class)
+    fun handleUnauthorizedOperationException(e:UnauthorizedOperationException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ErrorResponseDto(e.message))
+    }
+
+    @ExceptionHandler(IllegalStateException::class)
+    fun handleIllegalArgumentException(e: IllegalStateException): ResponseEntity<ErrorResponseDto>{
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ErrorResponseDto(e.message))
+    }
+
 }

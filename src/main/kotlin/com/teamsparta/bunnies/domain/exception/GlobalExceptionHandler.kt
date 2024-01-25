@@ -1,8 +1,10 @@
 package com.teamsparta.bunnies.domain.exception
 
 import com.teamsparta.bunnies.domain.exception.dto.ErrorResponseDto
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
@@ -44,4 +46,10 @@ class GlobalExceptionHandler {
             .body(ErrorResponseDto(e.message))
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ErrorResponseDto("${e.bindingResult.fieldErrors.first().defaultMessage}"))
+    }
 }

@@ -55,9 +55,7 @@ class CommentServiceImpl(
         val foundComment = commentId.let { commentRepository.findByIdOrNull(it) }
                 ?: throw ModelNotFoundException("Comment", commentId)
 
-        //role이 USER이면서 본인이 아닐 경우에 권한 없음 예외처리
-        if ((userPrincipal.id != foundComment.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
-            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
+        checkCommentPermission(userPrincipal, foundComment) //role이 USER이면서 본인이 아닐 경우에 권한 없음 예외처리
 
 
         // 찾아온 댓글이 작성자의 것인지 확인합니다.
@@ -80,14 +78,20 @@ class CommentServiceImpl(
             commentRepository.findByIdOrNull(it)
         } ?: throw ModelNotFoundException("Comment", commentId)
 
-        //role이 USER이면서 본인이 아닐 경우에 권한 없음 예외처리
-        if ((userPrincipal.id != foundComment.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
-            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
+        checkCommentPermission(userPrincipal, foundComment) //role이 USER이면서 본인이 아닐 경우에 권한 없음 예외처리
 
 // 댓글 작성자인지 확인
 //        foundComment.checkAuthentication(request.name)
 //해당하는 댓글의 ID를 사용하여 데이터베이스에서 해당 댓글을 삭제
         commentRepository.deleteById(commentId)
+    }
+
+    private fun checkCommentPermission(
+        userPrincipal: UserPrincipal,
+        foundComment: Comment
+    ) {
+        if ((userPrincipal.id != foundComment.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
+            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
     }
 
 }

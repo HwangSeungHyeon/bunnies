@@ -60,13 +60,10 @@ class PostServiceImpl(
         updatePostDto: UpdatePostDto,
         userPrincipal: UserPrincipal
     ): PostResponseDto {
-
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("Post", postId)
 
-        // ADMIN 또는 본인인 경우에만 수정 가능하도록 확인
-        if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
-            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
+        checkPostPermission(userPrincipal, post) // role이 ADMIN이거나 본인인 경우에만 삭제 가능하도록 확인
 
         return post
             .apply { update(updatePostDto) }
@@ -81,9 +78,7 @@ class PostServiceImpl(
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("Post", postId)
 
-        // role이 ADMIN이거나 본인인 경우에만 수정 가능하도록 확인
-        if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
-            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
+        checkPostPermission(userPrincipal, post) // role이 ADMIN이거나 본인인 경우에만 삭제 가능하도록 확인
 
         return post
             .apply { isComplete() }
@@ -98,9 +93,7 @@ class PostServiceImpl(
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("Post", postId)
 
-        // role이 ADMIN이거나 본인인 경우에만 삭제 가능하도록 확인
-        if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
-            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
+        checkPostPermission(userPrincipal, post) // role이 ADMIN이거나 본인인 경우에만 삭제 가능하도록 확인
 
         postRepository.delete(post)
     }
@@ -142,5 +135,13 @@ class PostServiceImpl(
         if(likeRepository.existsByPostIdAndUserId(postId, userPrincipal.id)){
             likeRepository.deleteByPostIdAndUserId(postId, userPrincipal.id)
         }
+    }
+
+    private fun checkPostPermission(
+        userPrincipal: UserPrincipal,
+        post: PostEntity
+    ) {
+        if ((userPrincipal.id != post.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
+            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
     }
 }

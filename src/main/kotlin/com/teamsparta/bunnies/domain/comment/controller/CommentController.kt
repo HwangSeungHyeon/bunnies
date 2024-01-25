@@ -12,30 +12,28 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 
-@RequestMapping("/articles/{articleId}/comments")
+@RequestMapping("/api/posts/{postId}/comments")
 @RestController
 class CommentController(
         val commentService: CommentService
 ) {
     @Operation(summary = "comment 생성")
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
     fun createComment(
-        @PathVariable articleId: Long,
+        @PathVariable postId: Long,
         @RequestBody createCommentRequestDto: CreateCommentRequestDto,
     ): ResponseEntity<CommentResponseDto> {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(commentService.createComment(createCommentRequestDto, articleId))
+                .body(commentService.createComment(createCommentRequestDto, postId))
     }
 
     @Operation(summary = "comment 수정")
     @PutMapping("/{commentId}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
     fun updateComment(
-            @PathVariable articleId: Long,
-            @PathVariable commentId: Long,
-            @RequestBody updateCommentRequestDto: UpdateCommentRequestDto
+        @PathVariable postId: Long,
+        @PathVariable commentId: Long,
+        @RequestBody updateCommentRequestDto: UpdateCommentRequestDto
     ): ResponseEntity<CommentResponseDto> {
 
         return ResponseEntity
@@ -45,12 +43,10 @@ class CommentController(
 
     @Operation(summary = "comment 삭제")
     @DeleteMapping("/{commentId}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
     fun deleteComment(
-            @PathVariable articleId: Long,
-            @PathVariable commentId: Long,
-            @RequestBody deleteCommentRequestDto: DeleteCommentRequestDto
-    ): ResponseEntity<Any> {
+        @PathVariable postId: Long,
+        @PathVariable commentId: Long,
+    ): ResponseEntity<Unit> {
 
         commentService.deleteComment(deleteCommentRequestDto)
 

@@ -1,6 +1,6 @@
 package com.teamsparta.bunnies.domain.comment.service
 
-//import com.teamsparta.bunnies.domain.article.repository.ArticleRepository
+
 import com.teamsparta.bunnies.domain.comment.dto.CommentResponseDto
 import com.teamsparta.bunnies.domain.comment.dto.CreateCommentRequestDto
 import com.teamsparta.bunnies.domain.comment.dto.DeleteCommentRequestDto
@@ -8,60 +8,67 @@ import com.teamsparta.bunnies.domain.comment.dto.UpdateCommentRequestDto
 import com.teamsparta.bunnies.domain.comment.model.Comment
 import com.teamsparta.bunnies.domain.comment.model.toResponse
 import com.teamsparta.bunnies.domain.comment.repository.CommentRepository
-//import org.springframework.data.repository.findByIdOrNull
+import com.teamsparta.bunnies.domain.post.repository.PostRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-//import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CommentServiceImpl(
-        //val postRepository: PostRepository,
-        val commentRepository: CommentRepository
+    val postRepository: PostRepository,
+    val commentRepository: CommentRepository
 ) : CommentService {
 
-    // @Transactional
-    override fun createComment(request: CreateCommentRequestDto, articleId: Long): CommentResponseDto {
-        TODO("Not yet implemented")
+    @Transactional
+    override fun createComment(request: CreateCommentRequestDto, postId: Long): CommentResponseDto {
 
-        //        val targetArticle = articleRepository.findByIdOrNull(articleId)
-//                ?: throw Exception("target article is not found")
-//
-//        val comment = Comment(
-//               // article = targetArticle,
-//                comment = request.comment,
-//                name = request.name
-//        )
-        //   commentRepository.save(comment)
+        // 게시글을 찾아오고, 없으면 예외를 던집니다.
+             val targetPost = postRepository.findByIdOrNull(postId)
+             ?: throw Exception("해당 게시물을 찾을 수 없습니다.")
+        // 댓글을 생성합니다.
+        val comment = Comment(
+               post = targetPost,
+               comment = request.comment,
+//               name = request.name
+         )
+        // 댓글을 저장합니다.
+           commentRepository.save(comment)
+        // 댓글을 응답 형태로 변환하여 반환합니다.
 
-//        return comment.toResponse()
-    }
-    //@Transactional
-    override fun updateComment(request: UpdateCommentRequestDto): CommentResponseDto {
-       // val foundComment = request.id.let { commentRepository.findByIdOrNull(it) }
-//                ?: throw Exception("target comment is not found")
+        return comment.toResponse()
+  }
+    @Transactional
+    //// 요청으로부터 받은 댓글의 ID를 사용하여 데이터베이스에서 해당하는 댓글을 찾은 후 수정.
+    override fun updateComment(
+        postId: Long,
+        commentId: Long,
+        request: UpdateCommentRequestDto
+    ): CommentResponseDto {
+        val foundComment = commentId.let { commentRepository.findByIdOrNull(it) }
+                ?: throw Exception("해당 댓글을 찾을 수 없습니다.")
+        // 찾아온 댓글이 작성자의 것인지 확인합니다.
+//        foundComment.checkAuthentication(request.name)
+        // 요청에서 받아온 새로운 댓글 내용으로 댓글을 수정합니다.
+        foundComment.comment = request.comment
+        // 수정된 댓글을 데이터베이스에 저장합니다.
+        commentRepository.save(foundComment)
 
-        //foundComment.checkAuthentication(request.name)
-      //  foundComment.comment = request.comment
-
-//        commentRepository.save(foundComment)
-
-       // return foundComment.toResponse()
-
-        TODO("Not yet implemented")
+        return foundComment.toResponse()
     }
 
     @Transactional
-    override fun deleteComment(request: DeleteCommentRequestDto) {
-//        val foundComment = request.id.let {
-//            commentRepository.findByIdOrNull(it)
-//        } ?: throw Exception("target comment is not found")
-//
+    //댓글삭제.id 를 통해 댓글 호출,null일때 예외
+    override fun deleteComment(
+        commentId:Long
+    ) {
+        val foundComment = commentId.let {
+            commentRepository.findByIdOrNull(it)
+        } ?: throw Exception("해당 댓글을 찾을 수 없습니다.")
+// 댓글 작성자인지 확인
 //        foundComment.checkAuthentication(request.name)
-//
-//        commentRepository.deleteById(request.id)
-
-        TODO("Not yet implemented")
+//해당하는 댓글의 ID를 사용하여 데이터베이스에서 해당 댓글을 삭제
+        commentRepository.deleteById(commentId)
     }
 
 }

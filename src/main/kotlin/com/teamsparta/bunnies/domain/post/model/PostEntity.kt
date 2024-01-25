@@ -1,5 +1,6 @@
 package com.teamsparta.bunnies.domain.post.model
 
+import com.teamsparta.bunnies.domain.comment.model.Comment
 import com.teamsparta.bunnies.domain.post.dto.request.CreatePostDto
 import com.teamsparta.bunnies.domain.post.dto.request.UpdatePostDto
 import jakarta.persistence.*
@@ -28,6 +29,9 @@ class PostEntity private constructor(
 
     @Column(name = "status")
     var status = false
+    //choi
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+    val comment: MutableList<Comment> = mutableListOf()
 
     @CreatedDate
     @Column(name = "create_at")

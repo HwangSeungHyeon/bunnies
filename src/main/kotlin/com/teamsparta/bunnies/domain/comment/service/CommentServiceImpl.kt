@@ -7,6 +7,7 @@ import com.teamsparta.bunnies.domain.comment.dto.UpdateCommentRequestDto
 import com.teamsparta.bunnies.domain.comment.model.Comment
 import com.teamsparta.bunnies.domain.comment.model.toResponse
 import com.teamsparta.bunnies.domain.comment.repository.CommentRepository
+import com.teamsparta.bunnies.domain.exception.ModelNotFoundException
 import com.teamsparta.bunnies.domain.post.repository.PostRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -24,7 +25,7 @@ class CommentServiceImpl(
 
         // 게시글을 찾아오고, 없으면 예외를 던집니다.
              val targetPost = postRepository.findByIdOrNull(postId)
-             ?: throw Exception("해당 게시물을 찾을 수 없습니다.")
+             ?: throw ModelNotFoundException("Post", postId)
         // 댓글을 생성합니다.
         val comment = Comment(
                post = targetPost,
@@ -45,7 +46,7 @@ class CommentServiceImpl(
         request: UpdateCommentRequestDto
     ): CommentResponseDto {
         val foundComment = commentId.let { commentRepository.findByIdOrNull(it) }
-                ?: throw Exception("해당 댓글을 찾을 수 없습니다.")
+                ?: throw ModelNotFoundException("Comment", commentId)
         // 찾아온 댓글이 작성자의 것인지 확인합니다.
 //        foundComment.checkAuthentication(request.name)
         // 요청에서 받아온 새로운 댓글 내용으로 댓글을 수정합니다.
@@ -63,7 +64,7 @@ class CommentServiceImpl(
     ) {
         val foundComment = commentId.let {
             commentRepository.findByIdOrNull(it)
-        } ?: throw Exception("해당 댓글을 찾을 수 없습니다.")
+        } ?: throw ModelNotFoundException("Comment", commentId)
 // 댓글 작성자인지 확인
 //        foundComment.checkAuthentication(request.name)
 //해당하는 댓글의 ID를 사용하여 데이터베이스에서 해당 댓글을 삭제

@@ -39,7 +39,7 @@ class PostEntity private constructor(
     @Column(name = "status")
     var status = false
     //choi
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
     val comment: MutableList<Comment> = mutableListOf()
 
     @CreatedDate

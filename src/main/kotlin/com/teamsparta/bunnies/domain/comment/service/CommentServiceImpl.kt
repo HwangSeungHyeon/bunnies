@@ -7,6 +7,7 @@ import com.teamsparta.bunnies.domain.comment.dto.UpdateCommentRequestDto
 import com.teamsparta.bunnies.domain.comment.model.Comment
 import com.teamsparta.bunnies.domain.comment.model.toResponse
 import com.teamsparta.bunnies.domain.comment.repository.CommentRepository
+import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.exception.ModelNotFoundException
 import com.teamsparta.bunnies.domain.post.repository.PostRepository
 import com.teamsparta.bunnies.infra.security.UserPrincipal
@@ -48,10 +49,17 @@ class CommentServiceImpl(
     override fun updateComment(
         postId: Long,
         commentId: Long,
-        request: UpdateCommentRequestDto
+        request: UpdateCommentRequestDto,
+        userPrincipal: UserPrincipal
     ): CommentResponseDto {
         val foundComment = commentId.let { commentRepository.findByIdOrNull(it) }
                 ?: throw ModelNotFoundException("Comment", commentId)
+
+        //role이 USER이면서 본인이 아닐 경우에 권한 없음 예외처리
+        if ((userPrincipal.id != foundComment.userId) && (userPrincipal.authorities.first().toString() == "ROLE_USER"))
+            throw InvalidCredentialException("본인의 글이 아니므로 권한이 없습니다.")
+
+
         // 찾아온 댓글이 작성자의 것인지 확인합니다.
 //        foundComment.checkAuthentication(request.name)
         // 요청에서 받아온 새로운 댓글 내용으로 댓글을 수정합니다.

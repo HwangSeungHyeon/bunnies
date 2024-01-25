@@ -33,17 +33,19 @@ class CommentController(
                 .body(commentService.createComment(createCommentRequestDto, postId, userPrincipal))
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Operation(summary = "comment 수정")
     @PutMapping("/{commentId}")
     fun updateComment(
         @PathVariable postId: Long,
         @PathVariable commentId: Long,
-        @RequestBody updateCommentRequestDto: UpdateCommentRequestDto
+        @RequestBody updateCommentRequestDto: UpdateCommentRequestDto,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal
     ): ResponseEntity<CommentResponseDto> {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(commentService.updateComment(postId, commentId, updateCommentRequestDto))
+                .body(commentService.updateComment(postId, commentId, updateCommentRequestDto, userPrincipal))
     }
 
 

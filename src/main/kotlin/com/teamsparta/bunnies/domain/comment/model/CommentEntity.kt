@@ -49,7 +49,8 @@ fun CommentEntity.toResponse(): CommentResponseDto {
     return CommentResponseDto(
         id = id!!,
         comment = comment,
-        //         name = name,
+        createAt = createdAt!!,
+        updateAt = updateAt!!
     )
 }
 

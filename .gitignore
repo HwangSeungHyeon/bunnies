@@ -38,3 +38,4 @@ out/
 
 jwt.yml
 server.yml
+aws.yml

@@ -29,13 +29,54 @@
 
 ![와이어프레임](https://velog.velcdn.com/images/xlddy02/post/f9e9cea7-b747-4e26-b4f6-0f6f2090b3d1/image.png)
 
-## 패키지 구조
-
 ## API 명세서
 
 ## ERD
 
 ![ERD](https://velog.velcdn.com/images/xlddy02/post/b677b9e7-9dbf-4ea0-96d9-fa5d75e54e4d/image.png)
+
+## 패키지 구조
+
+```
+bunnies
+    ├─domain
+    │  ├─admin
+    │  │  ├─controller
+    │  │  ├─dto
+    │  │  │  ├─request
+    │  │  │  └─response
+    │  │  ├─model
+    │  │  ├─repository
+    │  │  └─service
+    │  ├─comment
+    │  │  ├─controller
+    │  │  ├─dto
+    │  │  ├─model
+    │  │  ├─repository
+    │  │  └─service
+    │  ├─exception
+    │  │  └─dto
+    │  ├─post
+    │  │  ├─controller
+    │  │  ├─dto
+    │  │  │  ├─request
+    │  │  │  └─response
+    │  │  ├─model
+    │  │  ├─repository
+    │  │  └─service
+    │  └─user
+    │      ├─controller
+    │      ├─dto
+    │      │  ├─request
+    │      │  └─response
+    │      ├─model
+    │      ├─repository
+    │      └─service
+    └─infra
+        ├─security
+        │  └─jwt
+        └─swagger
+```
 
 ## 👨🏻‍💻 Built With
 

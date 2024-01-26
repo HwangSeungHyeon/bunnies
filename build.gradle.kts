@@ -34,6 +34,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0") //swager
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE") //AWS S3
 
     implementation("io.jsonwebtoken:jjwt-api:0.12.3") //JWT
     implementation("org.springframework.boot:spring-boot-starter-security") //Spring Security

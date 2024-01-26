@@ -27,6 +27,7 @@ class AdminController(
     private val userService: UserService
 ) {
 
+    @PreAuthorize("isAnonymous()")
     @Operation(summary = "관리자 회원가입", description = "관리자 회원가입을 합니다.")
     @PostMapping("/signup")
     fun adminSignUp(
@@ -38,6 +39,7 @@ class AdminController(
             .body(adminService.adminSignUp(adminSignUpRequestDto))
     }
 
+    @PreAuthorize("isAnonymous()")
     @Operation(summary = "관리자 로그인", description = "관리자 로그인을 합니다.")
     @PostMapping("/login")
     fun login(

@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -26,6 +27,7 @@ class UserController(
     private val s3Service: S3Service
 ) {
 
+    @PreAuthorize("isAnonymous()")
     @Operation(summary = "로그인", description = "로그인을 합니다.")
     @PostMapping("/login")
     fun login(
@@ -37,6 +39,7 @@ class UserController(
 
     }
 
+    @PreAuthorize("isAnonymous()")
     @Operation(summary = "사용자 회원가입", description = "사용자 회원가입을 합니다.")
     @PostMapping("/signup")
     fun signUp(

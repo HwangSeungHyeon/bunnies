@@ -64,6 +64,9 @@ class AdminServiceImpl(
         val admin = adminRepository.findByAdminProfileEntityEmail(request.email)
             ?: throw ModelNotFoundException("User", null) //이메일 체크
 
+        if(admin.role.toString() != "ADMIN")
+            throw InvalidCredentialException("옳지않은 접근입니다.")
+
         if (!passwordEncoder.matches(request.password, admin.adminProfileEntity.password)) {
             throw InvalidCredentialException("비밀번호가 일치하지 않습니다.")
         }

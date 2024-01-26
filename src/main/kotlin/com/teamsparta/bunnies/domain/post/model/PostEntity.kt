@@ -1,6 +1,6 @@
 package com.teamsparta.bunnies.domain.post.model
 
-import com.teamsparta.bunnies.domain.comment.model.Comment
+import com.teamsparta.bunnies.domain.comment.model.CommentEntity
 import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.post.dto.request.CreatePostDto
 import com.teamsparta.bunnies.domain.post.dto.request.UpdatePostDto
@@ -14,7 +14,7 @@ import java.time.LocalDateTime
 
 @EntityListeners(AuditingEntityListener::class)
 @Entity
-@Table(name = "post")
+@Table(name = "post2")
 class PostEntity private constructor(
     @Column(name = "title")
     var title: String,
@@ -27,8 +27,14 @@ class PostEntity private constructor(
 
     @Column(name = "user_id")
     var userId: Long,
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    var user: UserEntity,
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, orphanRemoval = true)
+    val commentEntity: MutableList<CommentEntity> = mutableListOf(),
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, orphanRemoval = true)
     var likes: MutableList<LikeEntity> = mutableListOf()
 
 ) {
@@ -40,8 +46,6 @@ class PostEntity private constructor(
     @Column(name = "status")
     var status = false
     //choi
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
-    val comment: MutableList<Comment> = mutableListOf()
 
     @CreatedDate
     @Column(name = "create_at")

@@ -1,5 +1,6 @@
 package com.teamsparta.bunnies.domain.post.service
 
+import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.exception.ModelNotFoundException
 import com.teamsparta.bunnies.domain.exception.UnauthorizedOperationException
 import com.teamsparta.bunnies.domain.post.dto.request.CreatePostDto
@@ -52,6 +53,16 @@ class PostServiceImpl(
         val post = postRepository.save(PostEntity.toEntity(createPostDto, userPrincipal))
 
         return PostResponseDto.toResponse(post)
+//        val user = userRepository.findByIdOrNull(userPrincipal.id)?: throw InvalidCredentialException()
+//        val post = postRepository.save(
+//            PostEntity(
+//            user = user,
+//                title = createPostDto.title,
+//                description = createPostDto.description,
+//                price = createPostDto.price
+//        )
+//        )
+//        return PostResponseDto.toResponse(post)
     }
 
     @Transactional
@@ -105,7 +116,8 @@ class PostServiceImpl(
         val post = postRepository.findByIdOrNull(postId)
             ?: throw ModelNotFoundException("Post", postId)
 
-        println(userPrincipal.authorities)
+        if (post.userId == userPrincipal.id)
+            throw UnauthorizedOperationException("자신이 작성한 게시글에는 좋아요를 누를 수 없습니다.")
 
         if(likeRepository.existsByPostIdAndUserId(postId, userPrincipal.id)){
             throw IllegalStateException("이미 좋아요를 누르셨습니다.")

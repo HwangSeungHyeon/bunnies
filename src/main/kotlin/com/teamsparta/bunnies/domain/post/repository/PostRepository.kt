@@ -8,4 +8,5 @@ interface PostRepository : JpaRepository<PostEntity, Long>{
 
     fun findAllBy(pageable: Pageable): List<PostEntity>
 
+    fun findAllByUserId(userId: Long): List<PostEntity>?
 }

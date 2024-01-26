@@ -4,7 +4,7 @@ import com.teamsparta.bunnies.domain.user.model.UserEntity
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "like_post")
+@Table(name = "like_post2")
 class LikeEntity private constructor(
     @ManyToOne
     @JoinColumn(name = "post_id")

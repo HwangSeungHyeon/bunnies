@@ -4,12 +4,14 @@ package com.teamsparta.bunnies.domain.comment.service
 import com.teamsparta.bunnies.domain.comment.dto.CommentResponseDto
 import com.teamsparta.bunnies.domain.comment.dto.CreateCommentRequestDto
 import com.teamsparta.bunnies.domain.comment.dto.UpdateCommentRequestDto
-import com.teamsparta.bunnies.domain.comment.model.Comment
+import com.teamsparta.bunnies.domain.comment.model.CommentEntity
 import com.teamsparta.bunnies.domain.comment.model.checkCommentPermission
 import com.teamsparta.bunnies.domain.comment.model.toResponse
 import com.teamsparta.bunnies.domain.comment.repository.CommentRepository
+import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.exception.ModelNotFoundException
 import com.teamsparta.bunnies.domain.post.repository.PostRepository
+import com.teamsparta.bunnies.domain.user.repository.UserRepository
 import com.teamsparta.bunnies.infra.security.UserPrincipal
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -19,7 +21,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CommentServiceImpl(
     val postRepository: PostRepository,
-    val commentRepository: CommentRepository
+    val commentRepository: CommentRepository,
+    val userRepository: UserRepository
 ) : CommentService {
 
     @Transactional
@@ -32,17 +35,19 @@ class CommentServiceImpl(
         // 게시글을 찾아오고, 없으면 예외를 던집니다.
              val targetPost = postRepository.findByIdOrNull(postId)
              ?: throw ModelNotFoundException("Post", postId)
+
+        val userId = userRepository.findByIdOrNull(userPrincipal.id)?: throw InvalidCredentialException()
         // 댓글을 생성합니다.
-        val comment = Comment(
+        val commentEntity = CommentEntity(
                post = targetPost,
                comment = request.comment,
-               userId = userPrincipal.id
+               user = userId
          )
         // 댓글을 저장합니다.
-           commentRepository.save(comment)
+           commentRepository.save(commentEntity)
         // 댓글을 응답 형태로 변환하여 반환합니다.
 
-        return comment.toResponse()
+        return commentEntity.toResponse()
   }
     @Transactional
     //// 요청으로부터 받은 댓글의 ID를 사용하여 데이터베이스에서 해당하는 댓글을 찾은 후 수정.

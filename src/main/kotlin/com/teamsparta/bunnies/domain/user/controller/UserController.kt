@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @Tag(name = "users", description = "사용자 API")
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @RestController
 class UserController(
     private val userService: UserService
@@ -54,7 +54,7 @@ class UserController(
     }
 
     @Operation(summary = "타인 프로필 조회", description = "타인 프로필 조회 합니다.")
-    @GetMapping("/users/{userid}/profiles")
+    @GetMapping("/{userid}/profiles")
     fun getUserProfileById(
         @PathVariable userid: Long
     ): ResponseEntity<UserResponseDto> {
@@ -64,7 +64,7 @@ class UserController(
     }
 
     @Operation(summary = "본인 프로필 조회", description = "본인 프로필 조회 합니다.")
-    @GetMapping("/users/{userid}/profile")
+    @GetMapping("/{userid}/profile")
     fun getUserProfile(
         @AuthenticationPrincipal userPrincipal: UserPrincipal
     ): ResponseEntity<UserResponseDto> {
@@ -74,7 +74,7 @@ class UserController(
     }
 
     @Operation(summary = "본인 프로필 수정", description = "본인 프로필 수정 합니다.")
-    @PutMapping("/users/{userid}")
+    @PutMapping("/{userid}")
     fun updateUserProfile(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @Valid
@@ -86,7 +86,7 @@ class UserController(
     }
 
     @Operation(summary = "비밀번호 변경")
-    @PatchMapping("/users/{userid}")
+    @PatchMapping("/{userid}")
     fun changePassword(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @Valid
@@ -98,7 +98,7 @@ class UserController(
     }
 
     @Operation(summary = "회원 탈퇴", description = "사용자 삭제")
-    @DeleteMapping("/users/{userid}")
+    @DeleteMapping("/{userid}")
     fun deleteUserProfile(
         @AuthenticationPrincipal userPrincipal: UserPrincipal
     ): ResponseEntity<Unit> {

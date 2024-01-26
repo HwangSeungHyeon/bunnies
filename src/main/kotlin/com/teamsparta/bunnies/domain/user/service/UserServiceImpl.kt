@@ -3,6 +3,7 @@ package com.teamsparta.bunnies.domain.user.service
 import com.teamsparta.bunnies.domain.exception.InvalidCredentialException
 import com.teamsparta.bunnies.domain.exception.ModelNotFoundException
 import com.teamsparta.bunnies.domain.exception.NotAuthorizationException
+import com.teamsparta.bunnies.domain.post.repository.PostRepository
 import com.teamsparta.bunnies.domain.user.dto.request.ChangePasswordRequestDto
 import com.teamsparta.bunnies.domain.user.dto.request.LoginRequestDto
 import com.teamsparta.bunnies.domain.user.dto.request.SignUpRequestDto
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class UserServiceImpl(
     private val userRepository: UserRepository,
+    private val postRepository: PostRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwtPlugin: JwtPlugin
 ): UserService {
@@ -33,7 +35,7 @@ class UserServiceImpl(
             ?: throw ModelNotFoundException("User", null) //이메일 체크
 
         if (!passwordEncoder.matches(request.password, user.profileEntity.password)) {
-            throw InvalidCredentialException()
+            throw InvalidCredentialException("비밀번호가 일치하지 않습니다.")
         }
 
         return LoginResponseDto(
@@ -43,25 +45,6 @@ class UserServiceImpl(
                 role = user.role.name
             )
         )
-    }
-
-    override fun adminSignUp(request: SignUpRequestDto): UserResponseDto {
-        if (userRepository.existsByProfileEntityEmail(request.email))
-            throw IllegalStateException("사용중인 이메일입니다")
-
-        return userRepository.save(
-            UserEntity(
-
-                profileEntity = ProfileEntity(
-                    email = request.email,
-                    password = passwordEncoder.encode(request.password),
-                    nickname = request.nickname,
-                    introduction = request.introduction,
-                    address = request.address,
-                    phone = request.phone),
-                role = UserRole.ADMIN
-            )
-        ).toResponse()
     }
 
     override fun signUp(request: SignUpRequestDto): UserResponseDto {
@@ -139,7 +122,14 @@ class UserServiceImpl(
     override fun deleteUserProfile(userPrincipal: UserPrincipal) {
         val user = userRepository.findByIdOrNull(userPrincipal.id)
             ?: throw ModelNotFoundException("User", null)
+
         if(user.id != userPrincipal.id)throw NotAuthorizationException()
+
+        val postList = postRepository.findAllByUserId(user.id!!)
+            ?: throw ModelNotFoundException("Post", user.id)
+
+        postRepository.deleteAll(postList)
+
         userRepository.delete(user)
     }
 }

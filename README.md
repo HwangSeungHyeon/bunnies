@@ -31,6 +31,19 @@
 
 ## API 명세서
 
+### 게시글 API
+![image](https://github.com/HwangSeungHyeon/bunnies/assets/149580488/46663ef1-1694-4837-a783-cc5585f31328)
+![image](https://github.com/HwangSeungHyeon/bunnies/assets/149580488/3c4ef8e4-5624-4e68-a038-aa9c85ef9a46)
+
+### 댓글 API
+![image](https://github.com/HwangSeungHyeon/bunnies/assets/57141923/051d5fbf-85cf-4481-ae4e-524b5077f49d)
+
+### 사용자 API
+![image](https://github.com/HwangSeungHyeon/bunnies/assets/57141923/641a47e1-c6af-4245-82aa-9b485ef0a2de)
+
+### 어드민 API
+![image](https://velog.velcdn.com/images/xlddy02/post/8723fd23-1a93-4303-bf83-697047d39151/image.png)
+
 ## ERD
 
 ![ERD](https://velog.velcdn.com/images/xlddy02/post/b677b9e7-9dbf-4ea0-96d9-fa5d75e54e4d/image.png)
